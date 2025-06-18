@@ -12,13 +12,31 @@
 
 ## 🚀 セットアップ手順
 
+### 前提条件
+- Python 3.8+
+- [uv](https://docs.astral.sh/uv/) (推奨パッケージマネージャー)
+
+### uvのインストール
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+### プロジェクトのセットアップ
 1. リポジトリをクローン:
    ```bash
    git clone https://github.com/k-maeda03/gh-practice.git
    cd gh-practice
    ```
 
-2. Python 3.6+ がインストールされていることを確認
+2. 開発環境をセットアップ:
+   ```bash
+   make setup-dev
+   # または手動で:
+   uv venv
+   source .venv/bin/activate  # Linux/Mac
+   # .venv\Scripts\activate   # Windows
+   uv pip install -e ".[dev]"
+   ```
 
 ## 💻 使用例
 
@@ -26,16 +44,42 @@
 
 ```bash
 # 基本的な実行
-python hello.py
+uv run python hello.py
 
 # 名前を指定して実行
-python hello.py --name "あなたの名前"
+uv run python hello.py --name "あなたの名前"
 
 # 詳細ログを有効にして実行
-python hello.py --verbose
+uv run python hello.py --verbose
 
 # ヘルプを表示
-python hello.py --help
+uv run python hello.py --help
+
+# Makefileを使用
+make run
+make run-help
+```
+
+### 開発作業
+
+```bash
+# テストの実行
+make test
+
+# カバレッジ付きテスト
+make test-cov
+
+# コードフォーマット
+make format
+
+# リンティング
+make lint
+
+# 型チェック
+make type-check
+
+# すべてのCI チェックを実行
+make ci
 ```
 
 ### GitHub CLI コマンド例
