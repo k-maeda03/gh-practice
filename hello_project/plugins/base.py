@@ -6,9 +6,9 @@ import importlib
 import importlib.util
 import logging
 from abc import ABC, abstractmethod
-from pathlib import Path
-from typing import Dict, Any, List, Optional, Type
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Type
 
 
 @dataclass
@@ -85,8 +85,8 @@ class PluginManager:
     def _load_builtin_plugins(self) -> None:
         """Load built-in plugins"""
         try:
-            from .weather import WeatherPlugin
             from .quote import QuotePlugin
+            from .weather import WeatherPlugin
 
             self.register_plugin(WeatherPlugin())
             self.register_plugin(QuotePlugin())

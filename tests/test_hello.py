@@ -2,11 +2,13 @@
 """
 Tests for hello.py script
 """
-import pytest
-import sys
 import io
 import logging
-from unittest.mock import patch, MagicMock
+import sys
+from unittest.mock import MagicMock, patch
+
+import pytest
+
 from hello import main, setup_logging
 
 

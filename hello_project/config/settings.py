@@ -2,11 +2,12 @@
 """
 Configuration management using Pydantic
 """
-import os
-import yaml
 import json
+import os
 from pathlib import Path
-from typing import Optional, Dict, Any, List
+from typing import Any, Dict, List, Optional
+
+import yaml
 from pydantic import BaseModel, Field, ValidationError
 
 

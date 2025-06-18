@@ -3,8 +3,10 @@
 Quote plugin for Hello Project
 """
 import random
+from typing import Any, Dict
+
 import requests
-from typing import Dict, Any
+
 from .base import BasePlugin, PluginResult
 
 

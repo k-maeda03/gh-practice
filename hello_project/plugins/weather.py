@@ -2,8 +2,10 @@
 """
 Weather plugin for Hello Project
 """
+from typing import Any, Dict
+
 import requests
-from typing import Dict, Any
+
 from .base import BasePlugin, PluginResult
 
 
