@@ -38,7 +38,11 @@ def main() -> None:
             logging.info("Script completed successfully")
             
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+        try:
+            print(f"Error: {e}", file=sys.stderr)
+        except Exception:
+            # If even stderr printing fails, just exit
+            pass
         sys.exit(1)
 
 if __name__ == "__main__":
