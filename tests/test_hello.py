@@ -48,7 +48,9 @@ class TestHelloScript:
 
     def test_main_with_custom_name_and_verbose(self, capsys, caplog):
         """Test main function with both custom name and verbose flag"""
-        with patch.object(sys, "argv", ["hello.py", "--name", "Test", "--verbose"]):
+        with patch.object(
+            sys, "argv", ["hello.py", "--name", "Test", "--verbose"]
+        ):
             with caplog.at_level(logging.INFO):
                 main()
 

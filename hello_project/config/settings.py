@@ -23,12 +23,18 @@ class Settings(BaseModel):
     """Main application settings"""
 
     # Basic settings
-    default_name: str = Field(default="GitHub CLI", description="Default greeting name")
+    default_name: str = Field(
+        default="GitHub CLI", description="Default greeting name"
+    )
     verbose: bool = Field(default=False, description="Enable verbose logging")
 
     # Output settings
-    output_format: str = Field(default="text", description="Output format (text, json)")
-    show_timestamp: bool = Field(default=False, description="Show timestamp in output")
+    output_format: str = Field(
+        default="text", description="Output format (text, json)"
+    )
+    show_timestamp: bool = Field(
+        default=False, description="Show timestamp in output"
+    )
 
     # Plugin settings
     plugins: List[PluginConfig] = Field(
@@ -39,7 +45,9 @@ class Settings(BaseModel):
     )
 
     # API settings (for plugins)
-    api_timeout: int = Field(default=10, description="API request timeout in seconds")
+    api_timeout: int = Field(
+        default=10, description="API request timeout in seconds"
+    )
 
     class Config:
         """Pydantic configuration"""
@@ -153,7 +161,11 @@ class ConfigManager:
             if env_value := os.getenv(env_var):
                 # Convert string values to appropriate types
                 if config_key in ["verbose", "show_timestamp"]:
-                    env_config[config_key] = env_value.lower() in ["true", "1", "yes"]
+                    env_config[config_key] = env_value.lower() in [
+                        "true",
+                        "1",
+                        "yes",
+                    ]
                 elif config_key == "api_timeout":
                     env_config[config_key] = int(env_value)
                 else:
@@ -162,7 +174,9 @@ class ConfigManager:
         return env_config
 
     def save_config(
-        self, settings: Settings, config_path: Optional[str] = None
+        self,
+        settings: Settings,
+        config_path: Optional[str] = None,
     ) -> None:
         """Save configuration to file
 
@@ -170,7 +184,9 @@ class ConfigManager:
             settings: Settings to save
             config_path: Optional path to save configuration
         """
-        save_path = Path(config_path) if config_path else self._get_default_save_path()
+        save_path = (
+            Path(config_path) if config_path else self._get_default_save_path()
+        )
 
         # Ensure directory exists
         save_path.parent.mkdir(parents=True, exist_ok=True)
@@ -178,7 +194,9 @@ class ConfigManager:
         # Convert to dictionary and save as YAML
         config_dict = settings.model_dump()
         with open(save_path, "w", encoding="utf-8") as f:
-            yaml.dump(config_dict, f, default_flow_style=False, allow_unicode=True)
+            yaml.dump(
+                config_dict, f, default_flow_style=False, allow_unicode=True
+            )
 
     def _get_default_save_path(self) -> Path:
         """Get default save path for configuration

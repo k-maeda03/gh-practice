@@ -38,7 +38,9 @@ class TestPluginResult:
 
     def test_plugin_result_success(self):
         """Test successful plugin result"""
-        result = PluginResult(success=True, data={"test": "value"}, plugin_name="test")
+        result = PluginResult(
+            success=True, data={"test": "value"}, plugin_name="test"
+        )
 
         assert result.success is True
         assert result.data == {"test": "value"}
@@ -47,7 +49,9 @@ class TestPluginResult:
 
     def test_plugin_result_failure(self):
         """Test failed plugin result"""
-        result = PluginResult(success=False, error="Test error", plugin_name="test")
+        result = PluginResult(
+            success=False, error="Test error", plugin_name="test"
+        )
 
         assert result.success is False
         assert result.data is None
@@ -119,7 +123,9 @@ class TestPluginManager:
         """Test registration of invalid plugin"""
         manager = PluginManager()
 
-        with pytest.raises(ValueError, match="Plugin must inherit from BasePlugin"):
+        with pytest.raises(
+            ValueError, match="Plugin must inherit from BasePlugin"
+        ):
             manager.register_plugin("not a plugin")
 
     def test_get_plugin(self):
@@ -218,7 +224,9 @@ class TestWeatherPlugin:
         assert result.data["city"] == "Tokyo"
         assert "temperature" in result.data
         assert "description" in result.data
-        assert result.data["note"] == "This is mock data for demonstration purposes"
+        assert (
+            result.data["note"] == "This is mock data for demonstration purposes"
+        )
 
     def test_weather_plugin_without_api_key(self):
         """Test weather plugin without API key"""

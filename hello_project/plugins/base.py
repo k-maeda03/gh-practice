@@ -101,7 +101,7 @@ class PluginManager:
             plugin: Plugin instance to register
         """
         if not isinstance(plugin, BasePlugin):
-            raise ValueError(f"Plugin must inherit from BasePlugin")
+            raise ValueError("Plugin must inherit from BasePlugin")
 
         if not plugin.validate_config():
             raise ValueError(f"Plugin {plugin.name} has invalid configuration")
@@ -112,7 +112,9 @@ class PluginManager:
     def load_external_plugins(self) -> None:
         """Load plugins from external directory"""
         if not self.plugin_directory.exists():
-            self.logger.info(f"Plugin directory {self.plugin_directory} does not exist")
+            self.logger.info(
+                f"Plugin directory {self.plugin_directory} does not exist"
+            )
             return
 
         for plugin_file in self.plugin_directory.glob("*.py"):
@@ -122,7 +124,9 @@ class PluginManager:
             try:
                 self._load_plugin_from_file(plugin_file)
             except Exception as e:
-                self.logger.error(f"Failed to load plugin from {plugin_file}: {e}")
+                self.logger.error(
+                    f"Failed to load plugin from {plugin_file}: {e}"
+                )
 
     def _load_plugin_from_file(self, plugin_file: Path) -> None:
         """Load a plugin from a Python file
@@ -170,7 +174,9 @@ class PluginManager:
         """
         return list(self.plugins.keys())
 
-    def execute_plugin(self, name: str, context: Dict[str, Any]) -> PluginResult:
+    def execute_plugin(
+        self, name: str, context: Dict[str, Any]
+    ) -> PluginResult:
         """Execute a plugin
 
         Args:
@@ -183,7 +189,9 @@ class PluginManager:
         plugin = self.get_plugin(name)
         if not plugin:
             return PluginResult(
-                success=False, error=f"Plugin '{name}' not found", plugin_name=name
+                success=False,
+                error=f"Plugin '{name}' not found",
+                plugin_name=name,
             )
 
         try:
@@ -192,7 +200,9 @@ class PluginManager:
             return result
         except Exception as e:
             self.logger.error(f"Plugin {name} execution failed: {e}")
-            return PluginResult(success=False, error=str(e), plugin_name=name)
+            return PluginResult(
+                success=False, error=str(e), plugin_name=name
+            )
 
     def get_plugin_help(self, name: Optional[str] = None) -> str:
         """Get help for plugins
