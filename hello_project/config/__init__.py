@@ -1,5 +1,5 @@
 """Configuration management module"""
 
-from .settings import Settings, ConfigManager, PluginConfig
+from .settings import ConfigManager, PluginConfig, Settings
 
 __all__ = ["Settings", "ConfigManager", "PluginConfig"]

@@ -3,8 +3,10 @@
 Quote plugin for Hello Project
 """
 import random
+from typing import Any, Dict
+
 import requests
-from typing import Dict, Any
+
 from .base import BasePlugin, PluginResult
 
 
@@ -18,23 +20,34 @@ class QuotePlugin(BasePlugin):
     # Built-in quotes for offline usage
     BUILTIN_QUOTES = [
         {
-            "text": "The way to get started is to quit talking and begin doing.",
+            "text": ("The way to get started is to quit talking and begin doing."),
             "author": "Walt Disney",
         },
         {
-            "text": "Life is what happens to you while you're busy making other plans.",
+            "text": (
+                "Life is what happens to you while you're " "busy making other plans."
+            ),
             "author": "John Lennon",
         },
         {
-            "text": "The future belongs to those who believe in the beauty of their dreams.",
+            "text": (
+                "The future belongs to those who believe "
+                "in the beauty of their dreams."
+            ),
             "author": "Eleanor Roosevelt",
         },
         {
-            "text": "It is during our darkest moments that we must focus to see the light.",
+            "text": (
+                "It is during our darkest moments that we "
+                "must focus to see the light."
+            ),
             "author": "Aristotle",
         },
         {
-            "text": "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+            "text": (
+                "Success is not final, failure is not fatal: "
+                "it is the courage to continue that counts."
+            ),
             "author": "Winston Churchill",
         },
         {
@@ -130,7 +143,12 @@ class QuotePlugin(BasePlugin):
             True if configuration is valid
         """
         # Basic validation
-        if self.category not in ["inspirational", "motivational", "wisdom", "success"]:
+        if self.category not in [
+            "inspirational",
+            "motivational",
+            "wisdom",
+            "success",
+        ]:
             self.logger.warning(f"Unknown category: {self.category}, using default")
 
         return True

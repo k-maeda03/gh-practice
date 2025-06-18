@@ -1,4 +1,4 @@
-.PHONY: help install install-dev test lint format type-check clean run
+.PHONY: help install install-dev test lint format type-check clean run install-hooks
 
 help: ## Show this help message
 	@echo "Available commands:"
@@ -64,3 +64,8 @@ setup-dev: ## Setup development environment
 	@echo "Activate venv with: source .venv/bin/activate"
 	uv pip install -e ".[dev,docs]"
 	@echo "Development environment ready!"
+
+install-hooks: ## Install git hooks for pre-push checks
+	@echo "Installing git hooks..."
+	./scripts/install-hooks.sh
+	@echo "Git hooks installed! Tests will run before each push."

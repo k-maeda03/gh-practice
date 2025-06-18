@@ -1,8 +1,8 @@
 """Plugin system for Hello Project"""
 
 from .base import BasePlugin, PluginManager, PluginResult
-from .weather import WeatherPlugin
 from .quote import QuotePlugin
+from .weather import WeatherPlugin
 
 __all__ = [
     "BasePlugin",

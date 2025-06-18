@@ -2,8 +2,10 @@
 """
 Weather plugin for Hello Project
 """
+from typing import Any, Dict
+
 import requests
-from typing import Dict, Any
+
 from .base import BasePlugin, PluginResult
 
 
@@ -42,7 +44,9 @@ class WeatherPlugin(BasePlugin):
         if not self.api_key:
             return PluginResult(
                 success=False,
-                error="Weather API key not configured. Set 'api_key' in plugin config.",
+                error=(
+                    "Weather API key not configured. " "Set 'api_key' in plugin config."
+                ),
                 plugin_name=self.name,
             )
 

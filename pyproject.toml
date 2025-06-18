@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gh-practice"
-version = "1.3.1"
+version = "1.4.0"
 description = "GitHub CLI practice repository"
 readme = "README.md"
 requires-python = ">=3.8.1"
@@ -113,6 +113,7 @@ max-line-length = 88
 extend-ignore = [
     "E203",  # whitespace before ':'
     "W503",  # line break before binary operator
+    "F401",  # imported but unused (allow for now)
 ]
 exclude = [
     ".git",
@@ -121,4 +122,8 @@ exclude = [
     "dist",
     ".eggs",
     "*.egg",
+    ".venv/*",
+    "venv/*",
+    ".pytest_cache",
+    "htmlcov",
 ]

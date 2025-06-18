@@ -2,11 +2,12 @@
 """
 Configuration management using Pydantic
 """
-import os
-import yaml
 import json
+import os
 from pathlib import Path
-from typing import Optional, Dict, Any, List
+from typing import Any, Dict, List, Optional
+
+import yaml
 from pydantic import BaseModel, Field, ValidationError
 
 
@@ -152,7 +153,11 @@ class ConfigManager:
             if env_value := os.getenv(env_var):
                 # Convert string values to appropriate types
                 if config_key in ["verbose", "show_timestamp"]:
-                    env_config[config_key] = env_value.lower() in ["true", "1", "yes"]
+                    env_config[config_key] = env_value.lower() in [
+                        "true",
+                        "1",
+                        "yes",
+                    ]
                 elif config_key == "api_timeout":
                     env_config[config_key] = int(env_value)
                 else:
@@ -161,7 +166,9 @@ class ConfigManager:
         return env_config
 
     def save_config(
-        self, settings: Settings, config_path: Optional[str] = None
+        self,
+        settings: Settings,
+        config_path: Optional[str] = None,
     ) -> None:
         """Save configuration to file
 

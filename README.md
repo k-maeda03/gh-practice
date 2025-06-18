@@ -42,6 +42,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
    uv pip install -e ".[dev]"
    ```
 
+3. Git フック（推奨）をインストール:
+   ```bash
+   make install-hooks
+   ```
+   これにより、プッシュ前に自動でテストが実行され、失敗した場合はプッシュがブロックされます。
+
 ## 💻 使用例
 
 ### 基本的なスクリプト実行

@@ -2,11 +2,13 @@
 """
 Tests for plugin system
 """
-import pytest
 from unittest.mock import Mock, patch
+
+import pytest
+
 from hello_project.plugins import BasePlugin, PluginManager, PluginResult
-from hello_project.plugins.weather import WeatherPlugin
 from hello_project.plugins.quote import QuotePlugin
+from hello_project.plugins.weather import WeatherPlugin
 
 
 class MockPlugin(BasePlugin):

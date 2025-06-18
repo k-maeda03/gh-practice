@@ -2,13 +2,14 @@
 """
 Tests for configuration management
 """
-import pytest
 import tempfile
-import yaml
 from pathlib import Path
+
+import pytest
+import yaml
 from pydantic import ValidationError
 
-from hello_project.config import Settings, ConfigManager, PluginConfig
+from hello_project.config import ConfigManager, PluginConfig, Settings
 
 
 class TestSettings:
@@ -102,7 +103,11 @@ class TestConfigManager:
             "verbose": True,
             "output_format": "json",
             "plugins": [
-                {"name": "weather", "enabled": True, "config": {"api_key": "test123"}}
+                {
+                    "name": "weather",
+                    "enabled": True,
+                    "config": {"api_key": "test123"},
+                }
             ],
         }
 
