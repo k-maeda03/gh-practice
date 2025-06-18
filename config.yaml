@@ -1,0 +1,34 @@
+# Hello Project Configuration File
+# This file demonstrates the configuration options available
+
+# Basic settings
+default_name: "GitHub CLI User"
+verbose: false
+
+# Output settings  
+output_format: "text"  # Options: text, json
+show_timestamp: false
+
+# Plugin configurations
+plugins:
+  - name: "weather"
+    enabled: true
+    config:
+      use_mock: true
+      default_city: "Tokyo"
+      # For real weather data, uncomment and add your API key:
+      # api_key: "your_openweathermap_api_key"
+      # use_mock: false
+      
+  - name: "quote"
+    enabled: true
+    config:
+      use_api: false
+      category: "inspirational"
+      language: "en"
+
+# Plugin directory for external plugins
+plugin_directory: "plugins"
+
+# API settings
+api_timeout: 10

@@ -8,7 +8,11 @@
 - ✅ Issue の作成と管理
 - ✅ Pull Request の作成と管理
 - ✅ リリースの作成と管理
-- GitHub Actions の確認
+- ✅ GitHub Actions CI/CD パイプライン
+- ✅ テスト駆動開発 (pytest)
+- ✅ 設定ファイル管理 (pydantic + YAML)
+- ✅ プラグインシステム
+- ✅ 対話モード
 
 ## 🚀 セットアップ手順
 
@@ -40,24 +44,49 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ## 💻 使用例
 
-### Python スクリプトの実行
+### 基本的なスクリプト実行
 
 ```bash
-# 基本的な実行
+# 基本的な実行（従来版）
 uv run python hello.py
 
+# 拡張版の実行
+uv run python hello_v2.py
+
 # 名前を指定して実行
-uv run python hello.py --name "あなたの名前"
+uv run python hello_v2.py --name "あなたの名前"
 
 # 詳細ログを有効にして実行
-uv run python hello.py --verbose
+uv run python hello_v2.py --verbose
 
 # ヘルプを表示
-uv run python hello.py --help
+uv run python hello_v2.py --help
+```
 
-# Makefileを使用
-make run
-make run-help
+### 設定ファイルを使用した実行
+
+```bash
+# 設定ファイルを指定
+uv run python hello_v2.py --config config.yaml
+
+# JSON形式で出力
+uv run python hello_v2.py --output-format json
+
+# プラグインを使用
+uv run python hello_v2.py --plugin weather --plugin quote
+
+# 対話モードで実行
+uv run python hello_v2.py --interactive
+```
+
+### プラグインヘルプ
+
+```bash
+# 利用可能なプラグインを表示
+uv run python hello_v2.py --plugins-help
+
+# 特定のプラグインヘルプ（対話モード内で）
+# > plugins
 ```
 
 ### 開発作業
@@ -106,8 +135,55 @@ gh pr create --title "タイトル" --body "説明"
 
 ## 📁 ファイル構成
 
-- `README.md` - このファイル
-- `hello.py` - 改善されたPythonスクリプト
+```
+gh-practice/
+├── README.md                    # このファイル
+├── hello.py                     # 基本的なPythonスクリプト
+├── hello_v2.py                  # 拡張版スクリプト（設定・プラグイン対応）
+├── config.yaml                  # 設定ファイル例
+├── pyproject.toml              # プロジェクト設定（uv対応）
+├── Makefile                    # 開発タスク
+├── .github/workflows/ci.yml    # GitHub Actions CI設定
+├── hello_project/              # メインパッケージ
+│   ├── __init__.py
+│   ├── config/                 # 設定管理
+│   │   ├── __init__.py
+│   │   └── settings.py
+│   └── plugins/                # プラグインシステム
+│       ├── __init__.py
+│       ├── base.py            # プラグインベースクラス
+│       ├── weather.py         # 天気プラグイン
+│       └── quote.py           # 名言プラグイン
+└── tests/                      # テストスイート
+    ├── __init__.py
+    ├── test_hello.py          # 基本スクリプトのテスト
+    ├── test_config.py         # 設定管理のテスト
+    └── test_plugins.py        # プラグインシステムのテスト
+```
+
+## 🔧 新機能の詳細
+
+### 設定ファイル対応
+- **pydantic** による型安全な設定管理
+- **YAML/JSON** フォーマット対応
+- **環境変数** による設定上書き
+- 設定の**バリデーション**と**デフォルト値**
+
+### プラグインシステム
+- **拡張可能**なアーキテクチャ
+- **内蔵プラグイン**（天気、名言）
+- **外部プラグイン**の動的読み込み
+- エラーハンドリングとフォールバック
+
+### 対話モード
+- **リアルタイム**コマンド実行
+- プラグインとの**インタラクティブ**な操作
+- ヘルプシステムと設定確認
+
+### 出力フォーマット
+- **テキスト**形式（デフォルト）
+- **JSON**形式（API連携用）
+- タイムスタンプ対応
 
 ## 🤝 コントリビューション
 
