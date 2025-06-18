@@ -16,31 +16,32 @@ from hello_project.plugins import PluginManager
 
 def setup_logging(verbose: bool = False) -> None:
     """Setup logging configuration
-    
+
     Args:
         verbose: Enable verbose logging
     """
     level = logging.INFO if verbose else logging.WARNING
     logging.basicConfig(
-        level=level,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        level=level, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
 
 
-def format_output(data: Dict[str, Any], output_format: str, show_timestamp: bool = False) -> str:
+def format_output(
+    data: Dict[str, Any], output_format: str, show_timestamp: bool = False
+) -> str:
     """Format output according to specified format
-    
+
     Args:
         data: Data to format
         output_format: Output format (text, json)
         show_timestamp: Whether to include timestamp
-        
+
     Returns:
         Formatted output string
     """
     if show_timestamp:
         data["timestamp"] = datetime.now().isoformat()
-    
+
     if output_format == "json":
         return json.dumps(data, indent=2, ensure_ascii=False)
     else:
@@ -48,9 +49,9 @@ def format_output(data: Dict[str, Any], output_format: str, show_timestamp: bool
         lines = []
         if show_timestamp:
             lines.append(f"Time: {data.get('timestamp', '')}")
-        
+
         lines.append(data.get("greeting", ""))
-        
+
         if plugins_data := data.get("plugins"):
             lines.append("\nPlugin Results:")
             for plugin_name, plugin_result in plugins_data.items():
@@ -66,14 +67,18 @@ def format_output(data: Dict[str, Any], output_format: str, show_timestamp: bool
                     else:
                         lines.append(f"  {plugin_data}")
                 else:
-                    lines.append(f"\n{plugin_name.title()}: Error - {plugin_result.get('error')}")
-        
+                    lines.append(
+                        f"\n{plugin_name.title()}: Error - {plugin_result.get('error')}"
+                    )
+
         return "\n".join(lines)
 
 
-def interactive_mode(config_manager: ConfigManager, plugin_manager: PluginManager) -> None:
+def interactive_mode(
+    config_manager: ConfigManager, plugin_manager: PluginManager
+) -> None:
     """Run in interactive mode
-    
+
     Args:
         config_manager: Configuration manager
         plugin_manager: Plugin manager
@@ -81,16 +86,17 @@ def interactive_mode(config_manager: ConfigManager, plugin_manager: PluginManage
     settings = config_manager.settings
     print("🤖 Hello Project Interactive Mode")
     print("Type 'help' for commands, 'quit' to exit")
-    
+
     while True:
         try:
             user_input = input("\n> ").strip()
-            
-            if user_input.lower() in ['quit', 'exit', 'q']:
+
+            if user_input.lower() in ["quit", "exit", "q"]:
                 print("Goodbye! 👋")
                 break
-            elif user_input.lower() == 'help':
-                print("""
+            elif user_input.lower() == "help":
+                print(
+                    """
 Available commands:
   greet <name>     - Greet someone
   weather <city>   - Get weather for city  
@@ -98,23 +104,26 @@ Available commands:
   plugins          - List available plugins
   config           - Show current configuration
   quit             - Exit interactive mode
-                """)
-            elif user_input.lower() == 'plugins':
+                """
+                )
+            elif user_input.lower() == "plugins":
                 print(plugin_manager.get_plugin_help())
-            elif user_input.lower() == 'config':
+            elif user_input.lower() == "config":
                 print(f"Configuration:\n{settings.model_dump_json(indent=2)}")
-            elif user_input.startswith('greet '):
+            elif user_input.startswith("greet "):
                 name = user_input[6:].strip()
                 print(f"Hello, {name}!")
-            elif user_input.startswith('weather '):
+            elif user_input.startswith("weather "):
                 city = user_input[8:].strip() or "Tokyo"
                 result = plugin_manager.execute_plugin("weather", {"city": city})
                 if result.success:
                     data = result.data
-                    print(f"Weather in {data['city']}: {data['temperature']}, {data['description']}")
+                    print(
+                        f"Weather in {data['city']}: {data['temperature']}, {data['description']}"
+                    )
                 else:
                     print(f"Weather error: {result.error}")
-            elif user_input.lower() == 'quote':
+            elif user_input.lower() == "quote":
                 result = plugin_manager.execute_plugin("quote", {})
                 if result.success:
                     data = result.data
@@ -122,8 +131,10 @@ Available commands:
                 else:
                     print(f"Quote error: {result.error}")
             else:
-                print(f"Unknown command: {user_input}. Type 'help' for available commands.")
-                
+                print(
+                    f"Unknown command: {user_input}. Type 'help' for available commands."
+                )
+
         except KeyboardInterrupt:
             print("\nGoodbye! 👋")
             break
@@ -135,7 +146,7 @@ Available commands:
 def main() -> None:
     """Main function with enhanced features"""
     parser = argparse.ArgumentParser(
-        description='Enhanced GitHub CLI practice script with plugins',
+        description="Enhanced GitHub CLI practice script with plugins",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -143,52 +154,35 @@ Examples:
   %(prog)s --config config.yaml --plugin weather --plugin quote
   %(prog)s --interactive
   %(prog)s --plugins-help
-        """
+        """,
     )
-    
+
+    parser.add_argument("--name", default=None, help="Name to greet")
+    parser.add_argument("--config", help="Path to configuration file")
     parser.add_argument(
-        '--name', 
-        default=None,
-        help='Name to greet'
-    )
-    parser.add_argument(
-        '--config',
-        help='Path to configuration file'
-    )
-    parser.add_argument(
-        '--plugin',
-        action='append',
-        dest='plugins',
-        help='Enable plugin (can be used multiple times)'
+        "--plugin",
+        action="append",
+        dest="plugins",
+        help="Enable plugin (can be used multiple times)",
     )
     parser.add_argument(
-        '--plugins-help',
-        action='store_true',
-        help='Show help for all plugins'
+        "--plugins-help", action="store_true", help="Show help for all plugins"
+    )
+    parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
+    parser.add_argument(
+        "--interactive", action="store_true", help="Run in interactive mode"
     )
     parser.add_argument(
-        '--verbose', 
-        action='store_true',
-        help='Enable verbose logging'
+        "--output-format", choices=["text", "json"], help="Output format"
     )
-    parser.add_argument(
-        '--interactive',
-        action='store_true',
-        help='Run in interactive mode'
-    )
-    parser.add_argument(
-        '--output-format',
-        choices=['text', 'json'],
-        help='Output format'
-    )
-    
+
     args = parser.parse_args()
-    
+
     try:
         # Load configuration
         config_manager = ConfigManager(args.config)
         settings = config_manager.load_config()
-        
+
         # Override settings with command line arguments
         if args.name is not None:
             settings.default_name = args.name
@@ -196,65 +190,64 @@ Examples:
             settings.verbose = True
         if args.output_format:
             settings.output_format = args.output_format
-        
+
         # Setup logging
         setup_logging(settings.verbose)
         logger = logging.getLogger(__name__)
-        
+
         if settings.verbose:
             logger.info("Starting enhanced hello script")
-        
+
         # Initialize plugin manager
         plugin_manager = PluginManager()
         plugin_manager.load_external_plugins()
-        
+
         # Show plugins help
         if args.plugins_help:
             print(plugin_manager.get_plugin_help())
             return
-        
+
         # Run interactive mode
         if args.interactive:
             interactive_mode(config_manager, plugin_manager)
             return
-        
+
         # Prepare output data
         output_data = {
             "greeting": f"Hello, {settings.default_name}!",
-            "message": "This is an enhanced practice repository with plugin support."
+            "message": "This is an enhanced practice repository with plugin support.",
         }
-        
+
         # Execute plugins
         plugins_to_run = args.plugins or []
         if plugins_to_run:
             plugins_data = {}
             for plugin_name in plugins_to_run:
-                result = plugin_manager.execute_plugin(plugin_name, {
-                    "name": settings.default_name
-                })
+                result = plugin_manager.execute_plugin(
+                    plugin_name, {"name": settings.default_name}
+                )
                 plugins_data[plugin_name] = {
                     "success": result.success,
                     "data": result.data,
-                    "error": result.error
+                    "error": result.error,
                 }
-            
+
             output_data["plugins"] = plugins_data
-        
+
         # Output results
         formatted_output = format_output(
-            output_data, 
-            settings.output_format, 
-            settings.show_timestamp
+            output_data, settings.output_format, settings.show_timestamp
         )
         print(formatted_output)
-        
+
         if settings.verbose:
             logger.info("Script completed successfully")
-            
+
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         if args.verbose:
             import traceback
+
             traceback.print_exc()
         sys.exit(1)
 

@@ -17,7 +17,7 @@ class TestSettings:
     def test_default_settings(self):
         """Test default settings creation"""
         settings = Settings()
-        
+
         assert settings.default_name == "GitHub CLI"
         assert settings.verbose is False
         assert settings.output_format == "text"
@@ -29,7 +29,7 @@ class TestSettings:
         """Test settings with plugin configuration"""
         plugin_config = PluginConfig(name="test", enabled=True, config={"key": "value"})
         settings = Settings(plugins=[plugin_config])
-        
+
         assert len(settings.plugins) == 1
         assert settings.plugins[0].name == "test"
         assert settings.plugins[0].enabled is True
@@ -40,7 +40,7 @@ class TestSettings:
         # Valid output format
         settings = Settings(output_format="json")
         assert settings.output_format == "json"
-        
+
         # Invalid values should be caught by Pydantic
         with pytest.raises(ValidationError):
             Settings(api_timeout="invalid")
@@ -52,7 +52,7 @@ class TestPluginConfig:
     def test_plugin_config_defaults(self):
         """Test plugin config with defaults"""
         config = PluginConfig(name="test")
-        
+
         assert config.name == "test"
         assert config.enabled is True
         assert config.config == {}
@@ -62,9 +62,9 @@ class TestPluginConfig:
         config = PluginConfig(
             name="weather",
             enabled=False,
-            config={"api_key": "test123", "city": "Tokyo"}
+            config={"api_key": "test123", "city": "Tokyo"},
         )
-        
+
         assert config.name == "weather"
         assert config.enabled is False
         assert config.config["api_key"] == "test123"
@@ -90,7 +90,7 @@ class TestConfigManager:
         """Test loading default configuration"""
         manager = ConfigManager()
         settings = manager.load_config()
-        
+
         # Should return default settings when no config file exists
         assert isinstance(settings, Settings)
         assert settings.default_name == "GitHub CLI"
@@ -102,22 +102,18 @@ class TestConfigManager:
             "verbose": True,
             "output_format": "json",
             "plugins": [
-                {
-                    "name": "weather",
-                    "enabled": True,
-                    "config": {"api_key": "test123"}
-                }
-            ]
+                {"name": "weather", "enabled": True, "config": {"api_key": "test123"}}
+            ],
         }
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
             yaml.dump(config_data, f)
             temp_path = f.name
-        
+
         try:
             manager = ConfigManager(temp_path)
             settings = manager.load_config()
-            
+
             assert settings.default_name == "Test User"
             assert settings.verbose is True
             assert settings.output_format == "json"
@@ -129,20 +125,18 @@ class TestConfigManager:
 
     def test_load_config_from_json(self):
         """Test loading configuration from JSON file"""
-        config_data = {
-            "default_name": "JSON User",
-            "api_timeout": 20
-        }
-        
+        config_data = {"default_name": "JSON User", "api_timeout": 20}
+
         import json
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             json.dump(config_data, f)
             temp_path = f.name
-        
+
         try:
             manager = ConfigManager(temp_path)
             settings = manager.load_config()
-            
+
             assert settings.default_name == "JSON User"
             assert settings.api_timeout == 20
         finally:
@@ -154,10 +148,10 @@ class TestConfigManager:
         monkeypatch.setenv("HELLO_DEFAULT_NAME", "Env User")
         monkeypatch.setenv("HELLO_VERBOSE", "true")
         monkeypatch.setenv("HELLO_API_TIMEOUT", "30")
-        
+
         manager = ConfigManager()
         settings = manager.load_config()
-        
+
         assert settings.default_name == "Env User"
         assert settings.verbose is True
         assert settings.api_timeout == 30
@@ -167,21 +161,21 @@ class TestConfigManager:
         settings = Settings(
             default_name="Save Test",
             verbose=True,
-            plugins=[PluginConfig(name="test", enabled=False)]
+            plugins=[PluginConfig(name="test", enabled=False)],
         )
-        
+
         with tempfile.TemporaryDirectory() as temp_dir:
             config_path = Path(temp_dir) / "test_config.yaml"
-            
+
             manager = ConfigManager()
             manager.save_config(settings, str(config_path))
-            
+
             # Verify file was created and content is correct
             assert config_path.exists()
-            
-            with open(config_path, 'r') as f:
+
+            with open(config_path, "r") as f:
                 saved_data = yaml.safe_load(f)
-            
+
             assert saved_data["default_name"] == "Save Test"
             assert saved_data["verbose"] is True
             assert len(saved_data["plugins"]) == 1
@@ -189,10 +183,10 @@ class TestConfigManager:
 
     def test_invalid_config_file(self):
         """Test handling of invalid configuration file"""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
             f.write("invalid: yaml: content: [")
             temp_path = f.name
-        
+
         try:
             manager = ConfigManager(temp_path)
             with pytest.raises(ValueError):
@@ -202,10 +196,10 @@ class TestConfigManager:
 
     def test_unsupported_config_format(self):
         """Test handling of unsupported configuration file format"""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
             f.write("some content")
             temp_path = f.name
-        
+
         try:
             manager = ConfigManager(temp_path)
             with pytest.raises(ValueError, match="Unsupported config file format"):
