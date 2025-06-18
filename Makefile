@@ -48,10 +48,19 @@ clean: ## Clean up build artifacts and cache
 
 ci: format-check lint type-check test ## Run all CI checks
 
+docs: ## Build documentation with Sphinx
+	uv run sphinx-build -b html docs/source docs/build
+
+docs-live: ## Build documentation and watch for changes
+	uv run sphinx-autobuild docs/source docs/build
+
+docs-clean: ## Clean documentation build
+	rm -rf docs/build
+
 setup-dev: ## Setup development environment
 	@echo "Setting up development environment with uv..."
 	@echo "Make sure uv is installed: curl -LsSf https://astral.sh/uv/install.sh | sh"
 	uv venv
 	@echo "Activate venv with: source .venv/bin/activate"
-	uv pip install -e ".[dev]"
+	uv pip install -e ".[dev,docs]"
 	@echo "Development environment ready!"
