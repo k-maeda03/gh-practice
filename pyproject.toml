@@ -122,6 +122,8 @@ exclude = [
     "dist",
     ".eggs",
     "*.egg",
-    ".venv",
-    "venv",
+    ".venv/*",
+    "venv/*",
+    ".pytest_cache",
+    "htmlcov",
 ]
