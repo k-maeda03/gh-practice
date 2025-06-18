@@ -1,0 +1,52 @@
+#!/bin/bash
+#
+# Pre-push hook that runs tests before allowing push
+# This prevents pushing code that breaks tests
+#
+
+set -e
+
+echo "🔍 Running pre-push checks..."
+
+# Check if we have uv available
+if ! command -v uv &> /dev/null; then
+    echo "❌ uv is not installed. Please install uv first."
+    exit 1
+fi
+
+# Run code formatting check
+echo "📏 Checking code formatting with black..."
+if ! uv run black --check .; then
+    echo "❌ Code formatting check failed. Run 'uv run black .' to fix formatting."
+    exit 1
+fi
+
+# Run import sorting check  
+echo "📦 Checking import sorting with isort..."
+if ! uv run isort --check-only .; then
+    echo "❌ Import sorting check failed. Run 'uv run isort .' to fix imports."
+    exit 1
+fi
+
+# Run linting
+echo "🔍 Running linting with flake8..."
+if ! uv run flake8; then
+    echo "❌ Linting failed. Please fix the issues."
+    exit 1
+fi
+
+# Run type checking
+echo "🔧 Running type checking with mypy..."
+if ! uv run mypy .; then
+    echo "❌ Type checking failed. Please fix the type issues."
+    exit 1
+fi
+
+# Run tests
+echo "🧪 Running tests with pytest..."
+if ! uv run pytest; then
+    echo "❌ Tests failed. Please fix the failing tests before pushing."
+    exit 1
+fi
+
+echo "✅ All pre-push checks passed! Ready to push."
