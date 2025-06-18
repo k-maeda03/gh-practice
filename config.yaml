@@ -2,7 +2,7 @@
 # This file demonstrates the configuration options available
 
 # Basic settings
-default_name: "GitHub CLI User"
+default_name: "GitHub CLI"
 verbose: false
 
 # Output settings  

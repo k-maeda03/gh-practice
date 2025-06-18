@@ -117,15 +117,9 @@ class QuotePlugin(BasePlugin):
                 plugin_name=self.name
             )
             
-        except requests.RequestException as e:
+        except Exception as e:
             self.logger.warning(f"API request failed, falling back to built-in quotes: {e}")
             return self._get_builtin_quote()
-        except Exception as e:
-            return PluginResult(
-                success=False,
-                error=f"Failed to get quote: {e}",
-                plugin_name=self.name
-            )
     
     def validate_config(self) -> bool:
         """Validate plugin configuration
