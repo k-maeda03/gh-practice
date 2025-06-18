@@ -20,15 +20,12 @@ class QuotePlugin(BasePlugin):
     # Built-in quotes for offline usage
     BUILTIN_QUOTES = [
         {
-            "text": (
-                "The way to get started is to quit talking and begin doing."
-            ),
+            "text": ("The way to get started is to quit talking and begin doing."),
             "author": "Walt Disney",
         },
         {
             "text": (
-                "Life is what happens to you while you're "
-                "busy making other plans."
+                "Life is what happens to you while you're " "busy making other plans."
             ),
             "author": "John Lennon",
         },
@@ -152,9 +149,7 @@ class QuotePlugin(BasePlugin):
             "wisdom",
             "success",
         ]:
-            self.logger.warning(
-                f"Unknown category: {self.category}, using default"
-            )
+            self.logger.warning(f"Unknown category: {self.category}, using default")
 
         return True
 

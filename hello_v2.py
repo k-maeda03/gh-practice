@@ -115,9 +115,7 @@ Available commands:
                 print(f"Hello, {name}!")
             elif user_input.startswith("weather "):
                 city = user_input[8:].strip() or "Tokyo"
-                result = plugin_manager.execute_plugin(
-                    "weather", {"city": city}
-                )
+                result = plugin_manager.execute_plugin("weather", {"city": city})
                 if result.success:
                     data = result.data
                     weather_msg = (
@@ -174,9 +172,7 @@ Examples:
     parser.add_argument(
         "--plugins-help", action="store_true", help="Show help for all plugins"
     )
-    parser.add_argument(
-        "--verbose", action="store_true", help="Enable verbose logging"
-    )
+    parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
     parser.add_argument(
         "--interactive", action="store_true", help="Run in interactive mode"
     )
@@ -223,9 +219,7 @@ Examples:
         # Prepare output data
         output_data = {
             "greeting": f"Hello, {settings.default_name}!",
-            "message": (
-                "This is an enhanced practice repository with plugin support."
-            ),
+            "message": ("This is an enhanced practice repository with plugin support."),
         }
 
         # Execute plugins

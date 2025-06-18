@@ -28,9 +28,7 @@ class TestSettings:
 
     def test_settings_with_plugins(self):
         """Test settings with plugin configuration"""
-        plugin_config = PluginConfig(
-            name="test", enabled=True, config={"key": "value"}
-        )
+        plugin_config = PluginConfig(name="test", enabled=True, config={"key": "value"})
         settings = Settings(plugins=[plugin_config])
 
         assert len(settings.plugins) == 1
@@ -113,9 +111,7 @@ class TestConfigManager:
             ],
         }
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".yaml", delete=False
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
             yaml.dump(config_data, f)
             temp_path = f.name
 
@@ -138,9 +134,7 @@ class TestConfigManager:
 
         import json
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             json.dump(config_data, f)
             temp_path = f.name
 
@@ -194,9 +188,7 @@ class TestConfigManager:
 
     def test_invalid_config_file(self):
         """Test handling of invalid configuration file"""
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".yaml", delete=False
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
             f.write("invalid: yaml: content: [")
             temp_path = f.name
 
@@ -209,17 +201,13 @@ class TestConfigManager:
 
     def test_unsupported_config_format(self):
         """Test handling of unsupported configuration file format"""
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".txt", delete=False
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
             f.write("some content")
             temp_path = f.name
 
         try:
             manager = ConfigManager(temp_path)
-            with pytest.raises(
-                ValueError, match="Unsupported config file format"
-            ):
+            with pytest.raises(ValueError, match="Unsupported config file format"):
                 manager.load_config()
         finally:
             Path(temp_path).unlink()

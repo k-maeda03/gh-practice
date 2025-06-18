@@ -112,9 +112,7 @@ class PluginManager:
     def load_external_plugins(self) -> None:
         """Load plugins from external directory"""
         if not self.plugin_directory.exists():
-            self.logger.info(
-                f"Plugin directory {self.plugin_directory} does not exist"
-            )
+            self.logger.info(f"Plugin directory {self.plugin_directory} does not exist")
             return
 
         for plugin_file in self.plugin_directory.glob("*.py"):
@@ -124,9 +122,7 @@ class PluginManager:
             try:
                 self._load_plugin_from_file(plugin_file)
             except Exception as e:
-                self.logger.error(
-                    f"Failed to load plugin from {plugin_file}: {e}"
-                )
+                self.logger.error(f"Failed to load plugin from {plugin_file}: {e}")
 
     def _load_plugin_from_file(self, plugin_file: Path) -> None:
         """Load a plugin from a Python file
@@ -174,9 +170,7 @@ class PluginManager:
         """
         return list(self.plugins.keys())
 
-    def execute_plugin(
-        self, name: str, context: Dict[str, Any]
-    ) -> PluginResult:
+    def execute_plugin(self, name: str, context: Dict[str, Any]) -> PluginResult:
         """Execute a plugin
 
         Args:
@@ -200,9 +194,7 @@ class PluginManager:
             return result
         except Exception as e:
             self.logger.error(f"Plugin {name} execution failed: {e}")
-            return PluginResult(
-                success=False, error=str(e), plugin_name=name
-            )
+            return PluginResult(success=False, error=str(e), plugin_name=name)
 
     def get_plugin_help(self, name: Optional[str] = None) -> str:
         """Get help for plugins

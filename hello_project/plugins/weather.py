@@ -45,17 +45,14 @@ class WeatherPlugin(BasePlugin):
             return PluginResult(
                 success=False,
                 error=(
-                    "Weather API key not configured. "
-                    "Set 'api_key' in plugin config."
+                    "Weather API key not configured. " "Set 'api_key' in plugin config."
                 ),
                 plugin_name=self.name,
             )
 
         try:
             weather_data = self._get_real_weather(city)
-            return PluginResult(
-                success=True, data=weather_data, plugin_name=self.name
-            )
+            return PluginResult(success=True, data=weather_data, plugin_name=self.name)
         except Exception as e:
             return PluginResult(
                 success=False,
@@ -81,9 +78,7 @@ class WeatherPlugin(BasePlugin):
             "note": "This is mock data for demonstration purposes",
         }
 
-        return PluginResult(
-            success=True, data=mock_data, plugin_name=self.name
-        )
+        return PluginResult(success=True, data=mock_data, plugin_name=self.name)
 
     def _get_real_weather(self, city: str) -> Dict[str, Any]:
         """Get real weather data from API
